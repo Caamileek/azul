@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Azulejos Azul League</title>
+<style>
+:root{
+  --bg:#0e0e0e;
+  --glass-bg: rgba(255,255,255,0.05);
+  --glass-border: rgba(255,255,255,0.08);
+  --accent: rgb(0,131,173);
+  --btn:#0d6ea0;
+  --text:#ffffff;
+  --muted:rgba(255,255,255,0.75);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter, system-ui, -apple-system, "Helvetica Neue", Arial;
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+.top-nav{
+  position:fixed;top:0;left:0;right:0;
+  height:64px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;
+  background: rgba(18,18,20,0.6);
+  backdrop-filter: blur(10px);
+  border-bottom:1px solid rgba(255,255,255,0.03);
+  z-index:1000;
+}
+.top-nav .logo{font-weight:700;color:var(--accent);letter-spacing:0.6px}
+.top-nav ul{display:flex;gap:18px;align-items:center;margin:0;padding:0;list-style:none}
+.top-nav a{color:var(--muted);text-decoration:none;font-weight:600}
+.top-nav a:hover{color:var(--text)}
+.mobile-nav{
+  position:fixed;left:50%;transform:translateX(-50%);
+  bottom:12px; z-index:1200;
+  width:92%; max-width:480px;
+  display:flex;justify-content:space-around;align-items:center;padding:10px 12px;
+  background: rgba(12,12,14,0.75); backdrop-filter: blur(12px);
+  border-radius:26px; box-shadow:0 8px 30px rgba(0,0,0,0.6);
+  border:1px solid rgba(255,255,255,0.04);
+}
+.mobile-nav .nav-item{ color:var(--muted); text-decoration:none; font-size:12px; display:flex;flex-direction:column;align-items:center; gap:4px }
+.mobile-nav .nav-item span{ font-size:20px }
+@media(min-width:769px){ .mobile-nav{ display:none } }
+header{
+  padding:110px 20px 40px;
+  text-align:center;
+}
+header h1{
+  margin:0;
+  font-size:34px;
+  color:var(--accent);
+  letter-spacing:1px;
+  text-shadow:0 6px 30px rgba(0,131,173,0.06);
+}
+header p{margin:10px 0 0;color:var(--muted)}
+.content{max-width:1200px;margin:30px auto;padding:20px}
+.glass-section{
+  background:var(--glass-bg);
+  border-radius:14px;
+  border:1px solid var(--glass-border);
+  padding:26px;
+  margin:28px 0;
+  box-shadow:0 8px 30px rgba(0,0,0,0.5);
+  backdrop-filter: blur(8px);
+  opacity:0; transform: translateY(26px); transition:0.7s cubic-bezier(.2,.9,.2,1);
+}
+.glass-section.show{ opacity:1; transform: translateY(0) }
+.grid-2{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:24px;
+  align-items:center;
+}
+.image-wrap img{ width:100%; max-width:460px; border-radius:12px; display:block; object-fit:cover }
+@media(max-width:900px){ .grid-2{ grid-template-columns:1fr } .image-wrap{justify-content:center} }
+h2{ color:var(--accent); margin:0 0 8px text-align: center; }
+h3{ margin:14px 0 8px; color:#dbeeff }
+p,li{ color:var(--muted); line-height:1.5 }
+ul{ margin:8px 0 0 18px }
+.table-container{
+  margin-top:18px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border-radius:12px;
+  padding:14px;
+  border:1px solid rgba(255,255,255,0.06);
+  box-shadow:0 6px 20px rgba(0,0,0,0.45);
+}
+.table-title{ font-size:20px; margin:6px 0 12px; color:var(--accent); font-weight:700; text-align:center }
+.premium-table{ width:100%; border-collapse:collapse; color:var(--text); }
+.premium-table th, .premium-table td {
+  padding:10px 8px; text-align:center; border-bottom:1px solid rgba(255,255,255,0.04);
+  font-size:14px;
+}
+.premium-table thead th{ font-weight:700; color:#fff; background: rgba(255,255,255,0.03) }
+.row-i1{ background: rgba(0,180,120,0.12) }
+.row-i2{ background: rgba(0,131,173,0.08) }
+.row-out{ background: rgba(255,255,255,0.02) }
+.badge{ display:inline-block; padding:6px 10px; border-radius:999px; font-weight:700; font-size:12px; color:#000 }
+.badge.i1{ background: #2E8B57 }
+.badge.i2{ background: #89cfe6 }
+.badge.out{ background: #a8b3a7 }
+@media(max-width:700px){
+  .premium-table th, .premium-table td { padding:8px 6px; font-size:12px }
+  .table-title{ font-size:16px }
+}
+form{ display:grid; gap:10px; margin-top:8px }
+input,textarea{ background:rgba(255,255,255,0.02); color:var(--text); border-radius:8px; padding:10px; border:1px solid rgba(255,255,255,0.04) }
+button{ background:var(--btn); color:#fff; border:none; padding:10px 12px; border-radius:8px; cursor:pointer; font-weight:700 }
+.small-muted{ color:rgba(255,255,255,0.65); font-size:0.95rem }
+.center{ text-align:center }
+.accordion { margin-top:12px; }
+.accordion-item { margin-bottom:12px; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.04); background: rgba(255,255,255,0.02); }
+.accordion-header {
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:12px 14px; cursor:pointer; user-select:none;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+}
+.accordion-title { font-weight:700; color:var(--accent); }
+.accordion-toggle {
+  width:36px;height:36px;border-radius:10px;display:inline-grid;place-items:center;
+  background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.04);
+  transition: transform 0.25s ease, background 0.2s;
+}
+.accordion-toggle svg { width:16px;height:16px; display:block; color:var(--muted) }
+.accordion-content { max-height:0; overflow:hidden; transition: max-height 0.45s cubic-bezier(.2,.9,.2,1), padding 0.25s; padding:0 14px; }
+.accordion-content.open { padding:12px 14px 18px; }
+.accordion-item.open .accordion-toggle { transform: rotate(180deg); background: rgba(255,255,255,0.06) }
+@media(max-width:700px){
+  .accordion-header { padding:10px 12px }
+  .accordion-content { padding:8px 12px }
+}
+.tabela-miejsca {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+.tabela-miejsca th, .tabela-miejsca td {
+  padding: 6px 10px;
+  border: 1px solid #444;
+}
+
+.liga1 { background-color: #2E8B57; color: white; }   /* zielona */
+.liga2 { background-color: #89cfe6; color: white; }   /* niebieska */
+.poza  { background-color: #a8b3a7; color: #000; }     /* szary */
+
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="logo"></div>
+  <ul>
+    <li><a href="#home">Home</a></li>
+    <li><a href="#zasady">Zasady</a></li>
+    <li><a href="#harmonogram">Harmonogram</a></li>
+    <li><a href="#zgloszenia">Zgłoszenia</a></li>
+  </ul>
+</nav>
+
+<nav class="mobile-nav" aria-hidden="false">
+  <a class="nav-item" href="#home"><span>🏠</span><small>Home</small></a>
+  <a class="nav-item" href="#zasady"><span>📜</span><small>Zasady</small></a>
+  <a class="nav-item" href="#harmonogram"><span>📅</span><small>Plan</small></a>
+</nav>
+
+<header id="home">
+  <h1>Azulejos • Azul League </h1>
+  <p>Sezon 1 • Eliminacje • I Liga • II Liga</p>
+</header>
+
+<div class="content">
+
+  <!-- O LIDZE -->
+  <section class="glass-section" id="o-lidze">
+    <div class="grid-2">
+      <div>
+        <h2>O Lidze</h2>
+        <p class="small-muted">Azul League — sezon składa się z eliminacji, I Ligi i II Ligi. Poniżej znajdziesz wszystkie zasady, harmonogram i formularz zgłoszeń.</p>
+      </div>
+      <div class="image-wrap"><img src="https://cf.geekdo-images.com/kFgzuG2jp8xu19C4ULQprQ__imagepage@2x/img/nTptBVpvRqbbXYKENZ0BXTns3oQ=/fit-in/1800x1200/filters:strip_icc()/pic3863715.jpg" alt="Azul"></div>
+    </div>
+  </section>
+
+  <!-- ELIMINACJE -->
+  <section class="glass-section" id="eliminacje">
+    <h2>Eliminacje — 64 graczy (system szwajcarski)</h2>
+    <p class="small-muted"><strong>Format:</strong> 6 rund. Każdy gracz rozgrywa 1 partię w rundzie.</p>
+
+    <h3>Punktacja</h3>
+    <ul>
+      <li><b>2-osobowy stół:</b> +6 pkt - za zwycięstwo , 0 pkt - za porażkę</li>
+    </ul>
+
+    <h3>Bye</h3>
+    <p class="small-muted">Gracz pominięty otrzymuje +6 punktów.</p>
+
+    <h3>Awanse</h3>
+    <p class="small-muted">TOP 15 → I Liga, 16–30 → II Liga, 31–64 → zakończenie udziału w sezonie.</p>
+    
+  </section>
+
+  <!-- I LIGA -->
+  <section class="glass-section" id="iliga">
+    <div class="grid-2">
+      <div>
+        <h2>I Liga — 15 graczy (system kołowy)</h2>
+        <p class="small-muted">Każdy z każdym — 14 meczów. Punktacja rekomendowana: 2-osobowe stoliki (6/0).</p>
+
+        <h3>Spadki</h3>
+        <ul>
+          <li>13–15 → spadek do II Ligi</li>
+        </ul>
+      </div>
+      <div class="image-wrap"><img src="https://cf.geekdo-images.com/dsa4rAnykG5rGJKSIEkuoA__imagepage/img/7rJ5EeDmDSAFIiXqVNqi1EaWgOo=/fit-in/900x600/filters:no_upscale():strip_icc()/pic3718263.jpg" alt="I Liga"></div>
+    </div>
+  </section>
+
+  <!-- II LIGA -->
+  <section class="glass-section" id="iiliga">
+    <div class="grid-2">
+      <div class="image-wrap"><img src="https://cf.geekdo-images.com/dsa4rAnykG5rGJKSIEkuoA__imagepage/img/7rJ5EeDmDSAFIiXqVNqi1EaWgOo=/fit-in/900x600/filters:no_upscale():strip_icc()/pic3718263.jpg" alt="II Liga"></div>
+      <div>
+        <h2>II Liga — 15 graczy (system kołowy)</h2>
+        <p class="small-muted">Każdy gra 14 partii. 1–3 awansują do I Ligi, reszta utrzymuje się.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ZASADY (ACCORDIONS) -->
+  <section class="glass-section" id="zasady">
+    <h2>Zasady i tabela awansów/spadków</h2>
+    <p class="small-muted">Kliknij, aby rozwinąć szczegóły.</p>
+
+    <div class="accordion" role="region" aria-label="Zasady i struktura sezonu">
+
+      <!-- ACCORDION 1 - Zasady ogólne -->
+      <div class="accordion-item" id="acc-1">
+        <div class="accordion-header" role="button" tabindex="0" aria-expanded="false" aria-controls="acc1-content">
+          <div class="accordion-title">Zasady ogólne</div>
+          <div class="accordion-toggle" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="accordion-content" id="acc1-content" role="region" aria-hidden="true">
+          <p class="small-muted">Eliminacje: 64 graczy, system szwajcarski, 6 rund. Każdy gra jedną partię na rundę. Punktacja zależna od konfiguracji stołu (2/3/4 osób). "Bye" daje +6 pkt. System parowania unika powtórzeń. Tie-breakery: Buchholz, Buchholz-cut1, head-to-head, więcej zwycięstw.</p>
+          <ul class="small-muted">
+            <li>Eliminacje → TOP15 (I Liga), 16–30 (II Liga), 31–64 poza sezonem.</li>
+            <li>I Liga: 15 graczy, system kołowy (14 meczów).</li>
+            <li>II Liga: 15 graczy, system kołowy (14 meczów).</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ACCORDION 2 - Awans / Spadki -->
+      <div class="accordion-item" id="acc-2">
+        <div class="accordion-header" role="button" tabindex="0" aria-expanded="false" aria-controls="acc2-content">
+          <div class="accordion-title">Awans / Spadki (szybkie podsumowanie)</div>
+          <div class="accordion-toggle" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="accordion-content" id="acc2-content" role="region" aria-hidden="true">
+          <div class="table-container">
+            <div class="table-title">Awans / Spadki</div>
+            <table class="premium-table" aria-hidden="false">
+              <thead>
+                <tr><th>Etap</th><th>Miejsca</th><th>Status</th></tr>
+              </thead>
+              <tbody>
+                <tr class="row-i1"><td>Eliminacje</td><td>1–15</td><td><span class="badge i1">I Liga</span></td></tr>
+                <tr class="row-i2"><td>Eliminacje</td><td>16–30</td><td><span class="badge i2">II Liga</span></td></tr>
+                <tr class="row-out"><td>Eliminacje</td><td>31–64</td><td><span class="badge out">Poza sezonem</span></td></tr>
+                <tr class="row-i1"><td>I Liga</td><td>1–12</td><td><span class="badge i1">Utrzymanie</span></td></tr>
+                <tr class="row-i2"><td>I Liga</td><td>13–15</td><td><span class="badge i2">Spadek do II Ligi</span></td></tr>
+                <tr class="row-i1"><td>II Liga</td><td>1–3</td><td><span class="badge i1">Awans do I Ligi</span></td></tr>
+                <tr class="row-out"><td>II Liga</td><td>4–15</td><td><span class="badge out">Utrzymanie w II Lidze</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACCORDION 3 - Tabela aktualna -->
+      <div class="accordion-item" id="acc-3">
+        <div class="accordion-header" role="button" tabindex="0" aria-expanded="false" aria-controls="acc3-content">
+          <div class="accordion-title">Tabela miejsc (64 graczy)</div>
+          <div class="accordion-toggle" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="accordion-content" id="acc3-content" role="region" aria-hidden="true">
+          <div class="table-container">
+            <div class="table-title">Tabela Eliminacji</div>
+            <table class="premium-table">
+              <thead>
+                <tr><th>Lp.</th><th>Gracz</th><th>Punkty</th><th>Rozegrano</th><th>Pominięte</th></tr>
+              </thead>
+<table class="tabela-miejsca">
+  <thead>
+    <tr>
+      <th>Miejsce</th>
+      <th>Gracz</th>
+      <th>Punkty</th>
+      <th>Rozegrano</th>
+      <th>Pominięte</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <!-- 1–15 ZIELONE -->
+    <tr class="liga1"><td>1</td><td>SchengW</td><td>4</td><td>4</td><td>0</td></tr>
+    <tr class="liga1"><td>2</td><td>An00</td><td>3</td><td>3</td><td>0</td></tr>
+    <tr class="liga1"><td>3</td><td>Titan lupus</td><td>3</td><td>3</td><td>0</td></tr>
+    <tr class="liga1"><td>4</td><td>Dago123</td><td>3</td><td>3</td><td>0</td></tr>
+    <tr class="liga1"><td>5</td><td>GemGar</td><td>3</td><td>3</td><td>0</td></tr>
+    <tr class="liga1"><td>6</td><td>LéandreNo</td><td>3</td><td>4</td><td>0</td></tr>
+    <tr class="liga1"><td>7</td><td>Hyperion7</td><td>3</td><td>3</td><td>0</td></tr>
+    <tr class="liga1"><td>8</td><td>ACCOUNT N 115</td><td>3</td><td>4</td><td>0</td></tr>
+    <tr class="liga1"><td>9</td><td>camileek</td><td>3</td><td>4</td><td>0</td></tr>
+    <tr class="liga1"><td>10</td><td>Ziorippo</td><td>3</td><td>3</td><td>0</td></tr>
+    <tr class="liga1"><td>11</td><td>ZeoNagato</td><td>2</td><td>4</td><td>0</td></tr>
+    <tr class="liga1"><td>12</td><td>baffo58</td><td>2</td><td>4</td><td>0</td></tr>
+    <tr class="liga1"><td>13</td><td>Sorrow777</td><td>2</td><td>3</td><td>0</td></tr>
+    <tr class="liga1"><td>14</td><td>borkaehw</td><td>2</td><td>3</td><td>0</td></tr>
+    <tr class="liga1"><td>15</td><td>aga2171</td><td>2</td><td>4</td><td>0</td></tr>
+
+    <!-- 16–30 NIEBIESKIE -->
+    <tr class="liga2"><td>16</td><td>Sote77</td><td>2</td><td>3</td><td>0</td></tr>
+    <tr class="liga2"><td>17</td><td>SilverD1</td><td>2</td><td>3</td><td>0</td></tr>
+    <tr class="liga2"><td>18</td><td>GoldenBoys8504</td><td>2</td><td>3</td><td>0</td></tr>
+    <tr class="liga2"><td>19</td><td>StatinTherapy</td><td>2</td><td>3</td><td>0</td></tr>
+    <tr class="liga2"><td>20</td><td>milynn7</td><td>2</td><td>3</td><td>0</td></tr>
+    <tr class="liga2"><td>21</td><td>Swat71</td><td>2</td><td>3</td><td>0</td></tr>
+    <tr class="liga2"><td>22</td><td>BeemanBerlin</td><td>2</td><td>3</td><td>1</td></tr>
+    <tr class="liga2"><td>23</td><td>Showtime35</td><td>2</td><td>3</td><td>0</td></tr>
+    <tr class="liga2"><td>24</td><td>Elena9603</td><td>2</td><td>3</td><td>0</td></tr>
+    <tr class="liga2"><td>25</td><td>sill-e</td><td>2</td><td>3</td><td>0</td></tr>
+    <tr class="liga2"><td>26</td><td>IkVindAllesBest</td><td>2</td><td>3</td><td>0</td></tr>
+    <tr class="liga2"><td>27</td><td>blade4</td><td>2</td><td>3</td><td>0</td></tr>
+    <tr class="liga2"><td>28</td><td>LaAntilla</td><td>2</td><td>3</td><td>0</td></tr>
+    <tr class="liga2"><td>29</td><td>Mery_MiSo</td><td>2</td><td>3</td><td>0</td></tr>
+    <tr class="liga2"><td>30</td><td>Lwenyuan</td><td>2</td><td>3</td><td>0</td></tr>
+
+    <!-- 31–62 SZARE -->
+    <tr class="poza"><td>31</td><td>VEGEboss</td><td>2</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>32</td><td>Lori1710</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>33</td><td>holsan</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>34</td><td>bruszinyuszi</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>35</td><td>LukaszBoz</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>36</td><td>Marjanne23</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>37</td><td>PtitOurs6</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>38</td><td>maja_bob</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>39</td><td>Vincent434</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>40</td><td>alejayo</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>41</td><td>Sawalka93</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>42</td><td>Loreta0819</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>43</td><td>vita ludio</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>44</td><td>Mayabeille94</td><td>1</td><td>2</td><td>1</td></tr>
+    <tr class="poza"><td>45</td><td>gusgus7781</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>46</td><td>Princesa Rata</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>47</td><td>vickob</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>48</td><td>jennylane</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>49</td><td>Ottoviolet</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>50</td><td>Gregor_H98</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>51</td><td>Tactix47</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>52</td><td>mmc68</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>53</td><td>Didzou</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>54</td><td>lluisqui</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>55</td><td>Seanalk</td><td>1</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>56</td><td>Cornelia24</td><td>1</td><td>3</td><td>1</td></tr>
+    <tr class="poza"><td>57</td><td>apos1234</td><td>1</td><td>1</td><td>0</td></tr>
+    <tr class="poza"><td>58</td><td>S p i k o r</td><td>0</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>59</td><td>micks_in</td><td>0</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>60</td><td>nikkineptune90</td><td>0</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>61</td><td>veronikaalterkaoui</td><td>0</td><td>3</td><td>0</td></tr>
+    <tr class="poza"><td>62</td><td>inspiring_darkhorsey</td><td>0</td><td>3</td><td>0</td></tr>
+
+  </tbody>
+
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Harmonogram -->
+  <section class="glass-section" id="harmonogram">
+    <h2>Harmonogram</h2>
+    <p class="small-muted">Turniej eliminacyjny rozpoczął się 14.11.2025 , harmonogram ligi zostaną podane wkrótce.</p>
+  </section>
+
+  <!-- Formularz zgłoszenia -->
+  <section class="glass-section" id="zgloszenia">
+    <h2>Formularz zgłoszenia</h2>
+    <form>
+      <input type="text" placeholder="Nick / Nickname" required />
+      <input type="email" placeholder="Email" required />
+      <textarea placeholder="Uwagi / Dodatkowe informacje" rows="4"></textarea>
+      <button type="submit">Wyślij zgłoszenie</button>
+    </form>
+  </section>
+
+</div>
+
+<script>
+// ANIMACJA SEKCJI
+const sections = document.querySelectorAll('.glass-section');
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('show');
+  });
+},{ threshold: 0.15 });
+sections.forEach(s=>observer.observe(s));
+
+// ACCORDION
+document.querySelectorAll('.accordion-header').forEach(header=>{
+  header.addEventListener('click', ()=>{
+    const item = header.parentElement;
+    const content = header.nextElementSibling;
+    const isOpen = item.classList.contains('open');
+
+    if(isOpen){
+      item.classList.remove('open');
+      content.style.maxHeight = null;
+      content.setAttribute('aria-hidden','true');
+      header.setAttribute('aria-expanded','false');
+    } else {
+      item.classList.add('open');
+      content.style.maxHeight = content.scrollHeight + "px";
+      content.setAttribute('aria-hidden','false');
+      header.setAttribute('aria-expanded','true');
+    }
+  });
+});
+</script>
+
+</body>
+</html>
