@@ -51,16 +51,187 @@ body {
 /* ===== CURRENT TOURNAMENT ===== */
 .current-tournament-glass { text-align:center; animation-delay:0.2s; }
 .current-tournament-glass span { font-size:1.35rem; font-weight:600; }
-.tournament-buttons { margin-top:18px; display:flex; justify-content:center; gap:18px; flex-wrap:wrap; }
+.tournament-buttons {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+/* === FROST GLASS BUTTON + SNOW SHINE === */
 .tournament-buttons button {
-  padding:12px 20px; border-radius:14px; border:none; font-size:1rem;
-  cursor:pointer; background:#38bdf8; color:#0f172a; font-weight:bold; transition:.25s;
+  position: relative;
+  overflow: hidden;
+
+  padding: 12px 22px;
+  border-radius: 18px;
+
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.06) 100%
+  );
+
+  backdrop-filter: blur(22px) brightness(1.2) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) brightness(1.2) saturate(180%);
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-right-color: rgba(255, 255, 255, 0.55);
+  border-bottom-color: rgba(255, 255, 255, 0.25);
+
+  color: #f8fafc;
+  letter-spacing: 0.3px;
+  font-size: 1rem;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.28s ease;
+  box-shadow:
+    0 8px 28px rgba(0,0,0,0.55),
+    inset 0 0 8px rgba(255,255,255,0.25);
 }
+
+/* === FROST GLASS BUTTON + LIGHT REFLECTION === */
+.tournament-buttons button {
+  position: relative;
+  overflow: hidden;
+
+  padding: 12px 22px;
+  border-radius: 18px;
+
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.20) 0%,
+    rgba(255, 255, 255, 0.06) 100%
+  );
+
+  backdrop-filter: blur(22px) brightness(1.18) saturate(170%);
+  -webkit-backdrop-filter: blur(22px) brightness(1.18) saturate(170%);
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-right-color: rgba(255, 255, 255, 0.55);
+  border-bottom-color: rgba(255, 255, 255, 0.25);
+
+  color: #f8fafc;
+  letter-spacing: 0.3px;
+  font-size: 1rem;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.25s ease;
+  box-shadow:
+      0 8px 28px rgba(0,0,0,0.55),
+      inset 0 0 8px rgba(255,255,255,0.22);
+}
+
+/* === KONKRET: WRZUĆ ZAMIENNIE ZA POPRZEDNI BLOK === */
+.tournament-buttons {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+/* FROST GLASS + REALISTIC LIGHT REFLECTION */
+.tournament-buttons button {
+  position: relative;        /* konieczne dla ::after */
+  overflow: hidden;          /* konieczne, by odbicie nie wychodziło poza przycisk */
+
+  padding: 12px 22px;
+  border-radius: 18px;
+
+  /* półprzezroczyste tło - usuwa pełne krycie */
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,0.20) 0%,
+    rgba(255,255,255,0.06) 100%
+  );
+
+  /* mocny blur, lekka korekta jasności */
+  backdrop-filter: blur(22px) brightness(1.16) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) brightness(1.16) saturate(160%);
+
+  /* szklista ramka */
+  border: 1px solid rgba(255,255,255,0.34);
+  border-right-color: rgba(255,255,255,0.54);
+  border-bottom-color: rgba(255,255,255,0.24);
+
+  color: #f8fafc;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  box-shadow:
+    0 8px 28px rgba(0,0,0,0.55),
+    inset 0 0 8px rgba(255,255,255,0.18);
+}
+
+/* pseudo-element tworzy miękkie odbicie światła */
+.tournament-buttons button::after {
+  content: "";
+  position: absolute;
+
+  /* start poza przyciskiem (góra-lewo) */
+  top: -140%;
+  left: -80%;
+
+  width: 200%;
+  height: 300%;
+
+  /* rozmyta plama świetlna */
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255,255,255,0.36) 0%,
+    rgba(255,255,255,0.14) 20%,
+    rgba(255,255,255,0.06) 45%,
+    rgba(255,255,255,0) 75%
+  );
+
+  filter: blur(8px);
+  opacity: 0;                 /* domyślnie niewidoczna */
+  transform: rotate(18deg);
+  transition: transform 0.9s ease-in-out, opacity 0.55s ease-in-out, left 0.9s ease-in-out, top 0.9s ease-in-out;
+  pointer-events: none;       /* nie blokuje kliku */
+  mix-blend-mode: screen;     /* lepsze zlanie z tłem */
+  z-index: 2;
+}
+
+/* aktywne odbicie przy hover */
+.tournament-buttons button:hover::after {
+  opacity: 0.45;
+  left: 120%;   /* przemieści się przez przycisk */
+  top: -40%;
+}
+
+/* hover wygląd przycisku */
 .tournament-buttons button:hover {
-  transform: translateY(-3px) scale(1.03);
-  background:#7dd3fc;
-  box-shadow:0 6px 16px rgba(56,189,248,0.45);
+  transform: translateY(-3px) scale(1.04);
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,0.26) 0%,
+    rgba(255,255,255,0.10) 100%
+  );
+  border-color: rgba(255,255,255,0.55);
+  box-shadow:
+    0 12px 32px rgba(0,0,0,0.62),
+    inset 0 0 12px rgba(255,255,255,0.30);
 }
+
+.tournament-buttons button:active {
+  transform: scale(0.96);
+  backdrop-filter: blur(26px) brightness(1.22);
+  -webkit-backdrop-filter: blur(26px) brightness(1.22);
+}
+
+
+
+
+
+
 
 /* ===== ABOUT ===== */
 .about-league { animation-delay:0.8s; }
@@ -333,6 +504,8 @@ window.addEventListener('resize', renderTournaments);
 
 /* ===== START ===== */
 renderTournaments();
+
+
 </script>
 
 </body>
