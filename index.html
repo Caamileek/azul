@@ -375,6 +375,41 @@ showBtn.onclick = ()=>{ modal.style.display="block"; }
 closeBtn.onclick = ()=>{ modal.style.display="none"; }
 window.onclick = (e)=>{ if(e.target===modal) modal.style.display="none"; }
 
+/* ===== SWIPE / PRZESUWANIE PALCEM ===== */
+let touchStartX = 0;
+let touchEndX = 0;
+
+const historyWrapper = document.querySelector(".tournament-history-wrapper");
+
+historyWrapper.addEventListener("touchstart", (e) => {
+  touchStartX = e.changedTouches[0].screenX;
+}, false);
+
+historyWrapper.addEventListener("touchend", (e) => {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+}, false);
+
+function handleSwipe() {
+  const swipeDistance = touchEndX - touchStartX;
+
+  // minimalna długość ruchu, aby uznać za swipe
+  if (Math.abs(swipeDistance) < 50) return;
+
+  // swipe w lewo → następne slajdy
+  if (swipeDistance < 0) {
+    currentIndex = Math.min(currentIndex + visibleCount, tournaments.length - visibleCount);
+  }
+
+  // swipe w prawo → poprzednie slajdy
+  if (swipeDistance > 0) {
+    currentIndex = Math.max(currentIndex - visibleCount, 0);
+  }
+
+  renderTournaments();
+}
+  
+  
 renderTournaments();
 </script>
 
