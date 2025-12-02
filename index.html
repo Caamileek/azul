@@ -203,6 +203,38 @@ body {
   font-weight: 600;
 }
 
+.bga-button.reverse-logo {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start; /* tekst po lewej */
+  padding-left: 20px;          /* padding dla tekstu po lewej */
+  padding-right: 20px;         /* minimalny padding, logo wychodzi poza przycisk */
+  overflow: visible;           /* konieczne, żeby logo mogło wychodzić */
+  border: 1px solid rgba(255,255,255,0.3); /* grubsza ramka jeśli chcesz */
+  border-radius: 30px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(18px) brightness(1.15) saturate(160%);
+  transition: all 0.25s ease;
+}
+
+.bga-button.reverse-logo .bga-logo-wrapper {
+  position: absolute;
+  top: 50%;
+  right: -48px;                 /* logo wychodzi poza prawą krawędź */
+  transform: translateY(-50%);
+}
+
+.bga-button.reverse-logo .bga-logo {
+  height: 60px;
+  width: auto;
+}
+
+
+
+
+
+
 
 @media (max-width: 600px) {
   .bga-button { height: 50px; border-radius: 25px; }
@@ -232,16 +264,28 @@ body {
   <span>Current Tournament: Registration ongoing • Azulejos Round 2</span>
   <div class="tournament-buttons">
 
-<a href="https://boardgamearena.com/tournament?id=498744" target="_blank" class="bga-button">
-  <div class="bga-logo-wrapper">
-    <img src="https://pl.doc.boardgamearena.com/images/thumb/c/c0/BOARDGAME_ARENA_ICON_RGB.png/300px-BOARDGAME_ARENA_ICON_RGB.png" alt="BGA Logo" class="bga-logo">
+    <!-- Lewy przycisk - logo po lewej -->
+    <a href="https://boardgamearena.com/tournament?id=498744" target="_blank" class="bga-button">
+      <div class="bga-logo-wrapper">
+        <img src="https://pl.doc.boardgamearena.com/images/thumb/c/c0/BOARDGAME_ARENA_ICON_RGB.png/300px-BOARDGAME_ARENA_ICON_RGB.png" alt="BGA Logo" class="bga-logo">
+      </div>
+      <span>Page Tournament</span>
+    </a>
+
+    <!-- Prawy przycisk - logo po prawej -->
+    <a href="#" id="showResultsBtn" class="bga-button reverse-logo">
+      <span>Show Results</span>
+      <div class="bga-logo-wrapper">
+        <img src="https://i.ibb.co/VpVH5rgC/sheet.png" alt="Results Logo" class="bga-logo">
+      </div>
+    </a>
+
   </div>
-  <span>Page Tournament </span>
-</a>
+</div>
 
+    
+    
 
-
-    <button id="showResultsBtn">Show results</button>
   </div>
 </div>
 
