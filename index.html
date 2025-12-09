@@ -242,6 +242,20 @@ body {
   .bga-button span { font-size: 0.9rem; padding-right: 15px; }
 }
 
+.tournament-link {
+  color: #facc15;
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+}
+
+.tournament-link:hover {
+  color: #38bdf8;
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+}
+
+
+
 
 
 
@@ -262,26 +276,40 @@ body {
 
 <div class="glass current-tournament-glass">
   <span>Current Tournament: Azulejos Round 2 • Start 12.12.2025</span>
-  <div class="tournament-buttons">
 
-    <!-- Lewy przycisk - logo po lewej -->
+  <div class="tournament-buttons">
+    <!-- Lewy przycisk -->
     <a href="https://boardgamearena.com/tournament?id=498744" target="_blank" class="bga-button">
       <div class="bga-logo-wrapper">
-        <img src="https://pl.doc.boardgamearena.com/images/thumb/c/c0/BOARDGAME_ARENA_ICON_RGB.png/300px-BOARDGAME_ARENA_ICON_RGB.png" alt="BGA Logo" class="bga-logo">
+        <img src="https://pl.doc.boardgamearena.com/images/thumb/c/c0/BOARDGAME_ARENA_ICON_RGB.png/300px-BOARDGAME_ARENA_ICON_RGB.png"
+             alt="BGA Logo" class="bga-logo">
       </div>
       <span>Page Tournament</span>
     </a>
 
-    <!-- Prawy przycisk - logo po prawej -->
+    <!-- Prawy przycisk -->
     <a href="#" id="showResultsBtn" class="bga-button reverse-logo">
       <span>Results</span>
       <div class="bga-logo-wrapper">
         <img src="https://i.ibb.co/VpVH5rgC/sheet.png" alt="Results Logo" class="bga-logo">
       </div>
     </a>
-
   </div>
+
+  <!-- ✅ TU jest idealne miejsce -->
+<div class="glass history-container">
+  💠 <strong>Upcoming:</strong>
+  Registration for
+  <a href="https://pl.boardgamearena.com/tournament?id=503886"
+     target="_blank"
+     class="tournament-link">
+     <b>Azulejos Round 3</b>
+  </a>
+  opens on <b>09.12.2025</b> <b>•</b> <b>20:00:00</b>
 </div>
+
+</div>
+
 
     
     
