@@ -254,9 +254,61 @@ body {
   text-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
 }
 
+.league-organizer {
+  margin: 26px auto 0;
+  padding: 18px 22px;
+  max-width: 520px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: rgba(56,189,248,0.08);
+  border: 1px solid rgba(56,189,248,0.35);
+  border-radius: 18px;
+  position: relative;
+}
 
+.organizer-badge {
+  position: absolute;
+  top: -10px;
+  left: 18px;
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: #38bdf8;
+  color: #0f172a;
+  border-radius: 999px;
+}
 
+.organizer-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  object-fit: cover;
+  border: 2px solid rgba(56,189,248,0.6);
+}
 
+.organizer-content {
+  text-align: left;
+}
+
+.organizer-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #facc15;
+}
+
+.organizer-link {
+  display: inline-block;
+  margin-top: 2px;
+  font-size: 0.95rem;
+  color: #38bdf8;
+  text-decoration: none;
+}
+
+.organizer-link:hover {
+  color: #7dd3fc;
+}
 
 
 
@@ -334,6 +386,23 @@ body {
   <p>Azulejos • Azul League is a community league operating on the BGA platform. We organise seasonal tournaments (12 tournaments), statistics, a badge system</p> 
   <p>and a planned championship tournament. Track your results and compete with other Azul enthusiasts!</p>
 </div>
+
+<div class="league-organizer">
+  <div class="organizer-badge">ORGANIZER</div>
+
+  <img src="https://x.boardgamearena.net/data/avatar/0/84/84765/84765139_184.jpg?h=daf35ec210" alt="League Organizer" class="organizer-avatar">
+
+  <div class="organizer-content">
+    <div class="organizer-name">camileek • Azulejos League Admin</div>
+    <a href="https://boardgamearena.com/player?id=84765139"
+       target="_blank"
+       class="organizer-link">
+       Contact via Board Game Arena 
+    </a>
+  </div>
+</div>
+
+
 
 <!-- ===== MODAL ===== -->
 <div id="resultsModal" class="modal">
